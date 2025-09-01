@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velammal Wellness - Human Wellness Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+            scroll-behavior: smooth;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+        
+        .btn-hover-effect {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+        
+        .btn-hover-effect:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .wave {
+            position: relative;
+        }
+        
+        .wave::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+            border-radius: inherit;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .wave:hover::after {
+            opacity: 1;
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: white;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .feature-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: rotate(15deg) scale(1.1);
+        }
+        
+        /* Chatbot overlay animations */
+        #chatbot-overlay {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(50px) scale(0.9);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .chatbot-container {
+            animation: slideUp 0.4s ease-out;
+        }
+        
+        /* Responsive chatbot sizing */
+        @media (max-width: 768px) {
+            #chatbot-overlay .chatbot-container {
+                width: 95% !important;
+                height: 85vh !important;
+                max-height: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="gradient-bg text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <i class="fas fa-heartbeat text-3xl mr-3 text-blue-200"></i>
+                    <h1 class="text-3xl font-bold">Velammal Wellness</h1>
+                </div>
+                <nav class="hidden md:block">
+                    <ul class="flex space-x-8">
+                        <li><a href="#features" class="nav-link px-2 py-1">Features</a></li>
+                        <li><a href="#founder" class="nav-link px-2 py-1">Founder</a></li>
+                        <li><a href="#principal" class="nav-link px-2 py-1">Principal</a></li>
+                    </ul>
+                </nav>
+                <button class="md:hidden text-2xl focus:outline-none" id="mobile-menu-button">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div class="md:hidden hidden py-4" id="mobile-menu">
+                <ul class="flex flex-col space-y-3">
+                    <li><a href="#features" class="block px-2 py-1 hover:bg-blue-700 rounded">Features</a></li>
+                    <li><a href="#founder" class="block px-2 py-1 hover:bg-blue-700 rounded">Founder</a></li>
+                    <li><a href="#principal" class="block px-2 py-1 hover:bg-blue-700 rounded">Principal</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white py-16 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full opacity-10">
+            <div class="absolute top-1/4 left-1/4 w-32 h-32 rounded-full bg-white"></div>
+            <div class="absolute top-1/3 right-1/4 w-40 h-40 rounded-full bg-white"></div>
+            <div class="absolute bottom-1/4 right-1/3 w-24 h-24 rounded-full bg-white"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">Empowering Wellness Through Technology</h2>
+            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">A dedicated platform for students and teachers to enhance their mental, physical, and emotional well-being.</p>
+            
+            <div class="flex justify-center mt-12">
+                <button id="chatbot-btn" onclick="openChatbot()" style="background: white; color: #1e40af; font-weight: bold; padding: 24px 48px; border-radius: 50px; font-size: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: all 0.3s ease; transform: scale(1); cursor: pointer; border: none; z-index: 100; position: relative;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <i class="fas fa-robot" style="margin-right: 16px; font-size: 24px;"></i> 
+                    <div style="text-align: center;">
+                        <div style="font-weight: bold;">🤖 AI Wellness Assistant</div>
+                        <div style="font-size: 14px; font-weight: normal; color: #2563eb; margin-top: 4px;">For Students & Teachers</div>
+                    </div>
+                </button>
+            </div>
+            
+            <div class="mt-16 animate-bounce">
+                <a href="#features" class="text-blue-200 hover:text-white">
+                    <i class="fas fa-chevron-down text-2xl"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Our Wellness Features</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Comprehensive tools designed to support every aspect of your well-being journey</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover feature-card">
+                    <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4 feature-icon">
+                        <i class="fas fa-brain text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Mental Health Support</h3>
+                    <p class="text-gray-600">Access to guided meditations, stress management techniques, and mood tracking tools to support your mental well-being.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover feature-card">
+                    <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4 feature-icon">
+                        <i class="fas fa-dumbbell text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Physical Wellness</h3>
+                    <p class="text-gray-600">Customized exercise routines, posture correction guides, and ergonomic tips for students and teachers.</p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover feature-card">
+                    <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4 feature-icon">
+                        <i class="fas fa-heart text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Emotional Well-being</h3>
+                    <p class="text-gray-600">Journaling prompts, emotional intelligence exercises, and community support features.</p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover feature-card">
+                    <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4 feature-icon">
+                        <i class="fas fa-book text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Academic Support</h3>
+                    <p class="text-gray-600">Study techniques, time management tools, and exam preparation resources to reduce academic stress.</p>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover feature-card">
+                    <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4 feature-icon">
+                        <i class="fas fa-users text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Community Connection</h3>
+                    <p class="text-gray-600">Safe spaces for students and teachers to connect, share experiences, and support each other.</p>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover feature-card">
+                    <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4 feature-icon">
+                        <i class="fas fa-chart-line text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Progress Tracking</h3>
+                    <p class="text-gray-600">Personalized dashboards to track your wellness journey and celebrate milestones.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Founder Section -->
+    <section id="founder" class="container mx-auto px-4 py-16 max-w-4xl">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+            <div class="p-8">
+                <div class="flex flex-col md:flex-row items-center mb-6">
+                    <div class="w-32 h-32 rounded-full bg-blue-100 flex items-center justify-center mb-4 md:mb-0 md:mr-6">
+                        <i class="fas fa-user-graduate text-blue-600 text-5xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800">Swapnesh Kesavan</h3>
+                        <p class="text-blue-600">Class 11, Velammal Matriculation School, Theni</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-4 text-gray-700">
+                    <p class="text-lg font-semibold text-blue-800">Founder & Visionary</p>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>Passionate about using technology to improve human wellness</li>
+                        <li>Believes in making wellness resources accessible to all students and teachers</li>
+                        <li>Motto: "Wellness should be free and accessible to everyone in education"</li>
+                        <li>Created this platform to support mental health and overall well-being</li>
+                        <li>Advocate for stress-free learning environments</li>
+                        <li>Committed to continuous improvement of the platform</li>
+                    </ul>
+                    
+                    <div class="pt-4">
+                        <button onclick="showContactDetails()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-full transition-all duration-300 transform hover:scale-105">
+                            Contact Founder
+                        </button>
+                        <div id="contactDetails" class="hidden mt-4 p-4 bg-blue-50 rounded-lg">
+                            <p class="text-blue-800"><i class="fas fa-phone mr-2"></i> +91 93443 90108</p>
+                            <p class="text-blue-800 mt-2"><i class="fas fa-envelope mr-2"></i> swapjanesh23@gmail.com</p>
+                            <p class="text-blue-800 mt-2"><i class="fab fa-instagram mr-2"></i> __the_rizz__</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Principal Section -->
+    <section id="principal" class="container mx-auto px-4 py-16 max-w-4xl">
+        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+            <div class="p-8">
+                <div class="flex flex-col md:flex-row items-center mb-6">
+                    <div class="w-32 h-32 rounded-full bg-blue-100 flex items-center justify-center mb-4 md:mb-0 md:mr-6">
+                        <i class="fas fa-user-tie text-blue-600 text-5xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800">P. Raja</h3>
+                        <p class="text-blue-600">Principal, Velammal Matric Higher Secondary School, Theni</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-4 text-gray-700">
+                    <p class="text-lg font-semibold text-blue-800">Mentor & Supporter</p>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>Provided guidance and support for the development of Velammal Wellness</li>
+                        <li>Strong advocate for student and teacher well-being initiatives</li>
+                        <li>Encourages innovation in educational technology</li>
+                        <li>Believes in holistic development of students beyond academics</li>
+                        <li>Supported Swapnesh's vision to create this free wellness platform</li>
+                        <li>Committed to creating a positive school environment</li>
+                    </ul>
+                    
+                    <div class="pt-4">
+                        <button onclick="showPrincipalContact()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-full transition-all duration-300 transform hover:scale-105">
+                            Contact Principal
+                        </button>
+                        <div id="principalContactDetails" class="hidden mt-4 p-4 bg-blue-50 rounded-lg">
+                            <p class="text-blue-800"><i class="fas fa-phone mr-2"></i> +91 93443 90108</p>
+                            <p class="text-blue-800 mt-2"><i class="fas fa-envelope mr-2"></i> velammalmatric2021@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-blue-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-heartbeat mr-2"></i> Velammal Wellness
+                    </h3>
+                    <p class="text-blue-200">Empowering students and teachers through comprehensive wellness solutions.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="text-blue-200 hover:text-white">Features</a></li>
+                        <li><a href="#founder" class="text-blue-200 hover:text-white">Founder</a></li>
+                        <li><a href="#principal" class="text-blue-200 hover:text-white">Principal</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-blue-200 hover:text-white">Blog</a></li>
+                        <li><a href="#" class="text-blue-200 hover:text-white">FAQs</a></li>
+                        <li><a href="#" class="text-blue-200 hover:text-white">Support</a></li>
+                        <li><a href="#" class="text-blue-200 hover:text-white">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-center"><i class="fas fa-envelope mr-2 text-blue-200"></i> <a href="mailto:velammalmatric2021@gmail.com" class="text-blue-200 hover:text-white">velammalmatric2021@gmail.com</a></li>
+                        <li class="flex items-center"><i class="fas fa-phone mr-2 text-blue-200"></i> <span class="text-blue-200">+91 93443 90108</span></li>
+                        <li class="flex items-center"><i class="fas fa-map-marker-alt mr-2 text-blue-200"></i> <span class="text-blue-200">Velammal Matric School, Theni</span></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-blue-800 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="mb-4 md:mb-0">© 2025 Velammal Wellness. All Rights Reserved by Swapnesh.</p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-blue-200 hover:text-white text-xl"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-blue-200 hover:text-white text-xl"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com/__the_rizz__" class="text-blue-200 hover:text-white text-xl"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-blue-200 hover:text-white text-xl"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 bg-blue-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center hidden">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Embedded Chatbot Overlay -->
+    <div id="chatbot-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;">
+        <div class="chatbot-container" style="background: white; border-radius: 20px; width: 100%; max-width: 800px; height: 90vh; max-height: 800px; display: flex; flex-direction: column; box-shadow: 0 10px 40px rgba(0,0,0,0.3); position: relative;">
+            
+            <!-- Chatbot Header -->
+            <div style="background: linear-gradient(135deg, #1e4d92, #2980b9); color: white; padding: 20px; border-radius: 20px 20px 0 0; text-align: center; position: relative;">
+                <button onclick="closeChatbot()" style="position: absolute; top: 15px; right: 20px; background: rgba(255,255,255,0.2); color: white; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 18px;">×</button>
+                <h2 style="margin: 0; font-size: 24px;">🤗 Velammal Wellness Bot</h2>
+                <p style="margin: 5px 0 0 0; opacity: 0.9;">Your 24/7 Health & Wellness Companion</p>
+            </div>
+            
+            <!-- Chat Messages Area -->
+            <div id="embedded-chat-box" style="flex: 1; overflow-y: auto; padding: 20px; background: #f8f9fa;">
+                <div style="margin: 8px 0; padding: 10px 14px; border-radius: 12px; max-width: 85%; background: linear-gradient(135deg, #e3f2fd, #bbdefb); float: left; clear: both; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
+                    🤗 Hello! Welcome to Velammal Wellness Bot! 🌟<br><br>
+                    • Ask me about stress management 😌<br>
+                    • Physical health and exercise tips 💪<br>
+                    • Mental wellness and meditation 🧘‍♀️<br>
+                    • Study tips and academic wellness 📚<br>
+                    • Sleep and nutrition advice 😴🍎<br><br>
+                    How can I help you today? 😊
+                </div>
+            </div>
+            
+            <!-- Chat Input Area -->
+            <div style="padding: 20px; background: white; border-radius: 0 0 20px 20px; border-top: 1px solid #eee;">
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="embedded-user-input" placeholder="Ask me about health, wellness, or personal growth..." style="flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 25px; font-size: 14px; outline: none;">
+                    <button onclick="sendEmbeddedMessage()" style="padding: 12px 20px; background: linear-gradient(135deg, #4CAF50, #45a049); color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: bold;">Send 📤</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to open chatbot
+        function openChatbot() {
+            // Show the embedded chatbot on the same page
+            document.getElementById('chatbot-overlay').style.display = 'flex';
+        }
+
+        // Function to close chatbot
+        function closeChatbot() {
+            document.getElementById('chatbot-overlay').style.display = 'none';
+        }
+
+        // Close chatbot when clicking outside
+        document.addEventListener('DOMContentLoaded', function() {
+            const overlay = document.getElementById('chatbot-overlay');
+            if (overlay) {
+                overlay.addEventListener('click', function(e) {
+                    if (e.target === overlay) {
+                        closeChatbot();
+                    }
+                });
+            }
+        });
+
+        // Embedded chatbot functions
+        async function generateEmbeddedResponse(userMessage) {
+            try {
+                // Handle simple greetings and common responses
+                const message = userMessage.toLowerCase();
+                
+                if (message.includes('hi') || message.includes('hello') || message.includes('hey')) {
+                    return `Hello! 👋 Welcome to Velammal Wellness Bot! 
+
+• I'm here to help you with health and wellness advice 🌟
+• You can ask me about stress management 😌
+• Physical health and exercise tips 💪
+• Mental wellness and meditation 🧘‍♀️
+• Study tips and academic wellness 📚
+• Sleep and nutrition advice 😴🍎
+
+How can I help you today? 😊`;
+                }
+                
+                if (message.includes('thank') || message.includes('thanks')) {
+                    return `You're very welcome! 😊
+
+• I'm always here to help with wellness advice 💙
+• Feel free to ask more questions anytime 🤗
+• Take care of yourself and stay healthy! 🌟`;
+                }
+
+                const GEMINI_API_KEY = "AIzaSyDS80hhQC2iXEdRvSF25parDpBkxr0PlHU";
+                const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+                
+                const wellness_prompt = `You are a wellness assistant for students and teachers at Velammal School in Theni, India. Give helpful, relevant wellness advice.
+
+FORMATTING RULES:
+- Always use bullet points with • symbol
+- Add appropriate emojis to make responses engaging
+- Give 4-6 bullet points maximum
+- Be specific and actionable
+- Focus directly on the user's question
+- Use simple, clear language
+- Make advice practical for students/teachers
+
+User question: ${userMessage}
+
+Provide a helpful, relevant wellness response with emojis:`;
+
+                const response = await fetch(GEMINI_API_URL, {
+                    method: "POST",
+                    headers: { 
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: wellness_prompt
+                            }]
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
+                    let responseText = data.candidates[0].content.parts[0].text;
+                    
+                    // Clean up and format the response
+                    responseText = responseText
+                        .replace(/\*\*/g, '') // Remove bold markers
+                        .replace(/\*/g, '•') // Convert asterisks to bullet points
+                        .replace(/(\d+\.)/g, '•') // Convert numbered lists to bullet points
+                        .replace(/^\s*•\s*/gm, '• ') // Ensure proper bullet formatting
+                        .replace(/\n\s*\n/g, '\n') // Remove empty lines
+                        .trim();
+                    
+                    // If no bullet points, add them
+                    if (!responseText.includes('•')) {
+                        const sentences = responseText.split(/[.!?]+/).filter(s => s.trim());
+                        responseText = sentences.slice(0, 5).map(s => `• ${s.trim()}`).join('\n');
+                    }
+                    
+                    return responseText;
+                } else {
+                    throw new Error("No response from AI");
+                }
+            } catch (error) {
+                console.error(error);
+                return `Here are some wellness tips for you! 🌟
+
+• Take 5 deep breaths when feeling stressed 🧘‍♀️
+• Drink water regularly throughout the day 💧
+• Take a 5-minute break every hour while studying 📚
+• Get 7-8 hours of sleep each night 😴
+• Practice gratitude daily - write 3 things you're thankful for 🙏
+• Do some light stretching or exercise 🏃‍♀️
+• Connect with friends or family when feeling overwhelmed 👥`;
+            }
+        }
+
+        async function sendEmbeddedMessage() {
+            const input = document.getElementById("embedded-user-input");
+            const message = input.value.trim();
+            if (!message) return;
+
+            const button = document.querySelector("button[onclick='sendEmbeddedMessage()']");
+            input.disabled = true;
+            button.disabled = true;
+
+            addEmbeddedUserMessage(message);
+            const chatBox = document.getElementById("embedded-chat-box");
+            const typing = document.createElement("div");
+            typing.style.cssText = "margin: 8px 0; padding: 10px 14px; border-radius: 12px; max-width: 85%; background: linear-gradient(135deg, #e3f2fd, #bbdefb); float: left; clear: both; box-shadow: 0 1px 2px rgba(0,0,0,0.1); animation: pulse 1.5s infinite;";
+            typing.innerHTML = "🤔 Thinking...";
+            chatBox.appendChild(typing);
+
+            const response = await generateEmbeddedResponse(message);
+            typing.remove();
+            addEmbeddedBotMessage(response);
+
+            input.disabled = false;
+            button.disabled = false;
+            input.value = "";
+            input.focus();
+        }
+
+        function addEmbeddedUserMessage(message) {
+            const chatBox = document.getElementById("embedded-chat-box");
+            const userDiv = document.createElement("div");
+            userDiv.style.cssText = "margin: 8px 0; padding: 10px 14px; border-radius: 12px; max-width: 85%; background: linear-gradient(135deg, #e8f5e9, #c8e6c9); float: right; clear: both; text-align: right; box-shadow: 0 1px 2px rgba(0,0,0,0.1);";
+            userDiv.innerHTML = `${message} 👤`;
+            chatBox.appendChild(userDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function addEmbeddedBotMessage(message) {
+            const chatBox = document.getElementById("embedded-chat-box");
+            
+            // Format the message for better display
+            const formattedMessage = message
+                .replace(/•/g, '<br>• ') // Add line breaks before bullet points
+                .replace(/^\s*<br>/, '') // Remove leading line break
+                .replace(/\n/g, '<br>'); // Convert newlines to HTML breaks
+            
+            const botDiv = document.createElement("div");
+            botDiv.style.cssText = "margin: 8px 0; padding: 10px 14px; border-radius: 12px; max-width: 85%; background: linear-gradient(135deg, #e3f2fd, #bbdefb); float: left; clear: both; box-shadow: 0 1px 2px rgba(0,0,0,0.1);";
+            botDiv.innerHTML = `🤗 ${formattedMessage}`;
+            chatBox.appendChild(botDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Enter key support for embedded chatbot
+        document.addEventListener('DOMContentLoaded', function() {
+            const embeddedInput = document.getElementById("embedded-user-input");
+            if (embeddedInput) {
+                embeddedInput.addEventListener("keypress", function(event) {
+                    if (event.key === "Enter") sendEmbeddedMessage();
+                });
+            }
+        });
+
+        // Add click event listener to the chatbot button
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatbotBtn = document.getElementById('chatbot-btn');
+            if (chatbotBtn) {
+                chatbotBtn.addEventListener('click', function() {
+                    console.log('Chatbot button clicked!'); // Debug log
+                    openChatbot();
+                });
+            }
+        });
+
+        // Function to start Flask backend
+        async function startFlaskBackend() {
+            return new Promise((resolve, reject) => {
+                // Use PowerShell to start the Flask app in the background
+                const command = `cd "${window.location.pathname.substring(1).replace('/sample.html', '')}" && python app.py`;
+                
+                // For security reasons, we can't directly execute shell commands from the browser
+                // So we'll show instructions to the user
+                const userChoice = confirm(
+                    "To start the AI Wellness Assistant, we need to run the backend server.\n\n" +
+                    "Click OK to see instructions, or Cancel to open the chatbot directly (backend must be running already)."
+                );
+                
+                if (userChoice) {
+                    showBackendInstructions();
+                    reject(new Error('User chose to see instructions'));
+                } else {
+                    resolve();
+                }
+            });
+        }
+
+        // Function to show backend startup instructions
+        function showBackendInstructions() {
+            const currentPath = window.location.pathname.substring(1).replace('/sample.html', '').replace(/\//g, '\\');
+            const instructions = `
+            <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; display: flex; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;">
+                <div style="background: white; padding: 30px; border-radius: 15px; max-width: 700px; max-height: 90vh; overflow-y: auto; text-align: left; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
+                    <h3 style="color: #1e3a8a; margin-top: 0; text-align: center; font-size: 24px;">🚀 Start AI Wellness Assistant</h3>
+                    
+                    <div style="background: #e3f2fd; padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #2196F3;">
+                        <h4 style="margin: 0 0 10px 0; color: #1565C0;">⚡ Quick Start (Recommended)</h4>
+                        <p style="margin: 5px 0;">Double-click the <strong>start_wellness_bot.bat</strong> file in your wellness folder!</p>
+                    </div>
+                    
+                    <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="margin: 0 0 10px 0; color: #333;">🖥️ Manual Start (PowerShell/Command Prompt)</h4>
+                        <p><strong>Step 1:</strong> Open PowerShell or Command Prompt</p>
+                        <p><strong>Step 2:</strong> Copy and paste this command:</p>
+                        <div style="background: #333; color: #00ff00; padding: 10px; border-radius: 5px; font-family: 'Courier New', monospace; font-size: 14px; margin: 10px 0; overflow-x: auto;">
+cd "${currentPath}" && python app.py</div>
+                        <p><strong>Step 3:</strong> Wait for "Running on http://localhost:5000" message</p>
+                        <p><strong>Step 4:</strong> Come back and click the AI button again!</p>
+                    </div>
+                    
+                    <div style="background: #fff3e0; padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #FF9800;">
+                        <h4 style="margin: 0 0 10px 0; color: #E65100;">📋 Requirements</h4>
+                        <ul style="margin: 5px 0; padding-left: 20px;">
+                            <li>Python 3.7+ installed</li>
+                            <li>Flask library (install with: <code style="background: #f0f0f0; padding: 2px 5px;">pip install flask requests</code>)</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 25px;">
+                        <button onclick="closeInstructions()" style="background: #1e3a8a; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; margin-right: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">Got it! 👍</button>
+                        <button onclick="closeInstructions(); tryOpenChatbot();" style="background: #4CAF50; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">Try Opening Chatbot 🚀</button>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 15px; font-size: 12px; color: #666;">
+                        <p>💡 Tip: Keep the terminal/command prompt window open while using the chatbot!</p>
+                    </div>
+                </div>
+            </div>`;
+            document.body.insertAdjacentHTML('beforeend', instructions);
+        }
+
+        // Function to try opening chatbot directly
+        async function tryOpenChatbot() {
+            const isRunning = await checkBackendHealth();
+            if (isRunning) {
+                window.open('http://localhost:5000', '_blank');
+            } else {
+                alert('Backend is still not running. Please follow the instructions above to start the backend first.');
+            }
+        }
+
+        // Function to close instructions
+        function closeInstructions() {
+            const overlay = document.querySelector('div[style*="position: fixed"]');
+            if (overlay) {
+                overlay.remove();
+            }
+        }
+
+        // Function to check if backend is running
+        async function checkBackendHealth() {
+            try {
+                // Try to make a simple GET request to the Flask app
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+                
+                const response = await fetch('http://localhost:5000/', { 
+                    method: 'GET',
+                    signal: controller.signal,
+                    cache: 'no-cache',
+                    headers: {
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                });
+                
+                clearTimeout(timeoutId);
+                
+                // If we get any response (even if it's an error), the server is running
+                return response.status >= 200;
+                
+            } catch (error) {
+                // If it's a CORS error, the server is actually running
+                if (error.name === 'TypeError' && error.message.includes('CORS')) {
+                    return true;
+                }
+                
+                // Try a different approach - test the generate endpoint with OPTIONS
+                try {
+                    const controller2 = new AbortController();
+                    const timeoutId2 = setTimeout(() => controller2.abort(), 3000);
+                    
+                    const response2 = await fetch('http://localhost:5000/generate', { 
+                        method: 'OPTIONS',
+                        signal: controller2.signal,
+                        cache: 'no-cache'
+                    });
+                    
+                    clearTimeout(timeoutId2);
+                    return true;
+                    
+                } catch (error2) {
+                    // If we get a CORS error here too, server is running
+                    if (error2.name === 'TypeError' && error2.message.includes('CORS')) {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+        }
+
+        // Show contact details function
+        function showContactDetails() {
+            const details = document.getElementById('contactDetails');
+            details.classList.toggle('hidden');
+        }
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Back to top button
+        const backToTopButton = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('hidden');
+            } else {
+                backToTopButton.classList.add('hidden');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+        
+        // Show principal contact details function
+        function showPrincipalContact() {
+            const details = document.getElementById('principalContactDetails');
+            details.classList.toggle('hidden');
+        }
+
+        // Button hover effects
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.classList.add('shadow-xl');
+            });
+            button.addEventListener('mouseleave', function() {
+                this.classList.remove('shadow-xl');
+            });
+        });
+    </script>
+</body>
+</html>

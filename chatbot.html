@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velammal Wellness Bot</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e4d92, #2980b9);
+            min-height: 100vh;
+        }
+        .chat-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .header { text-align: center; margin-bottom: 20px; color: #1e4d92; }
+        .header h1 { font-size: 24px; margin: 0; color: #1e4d92; }
+        .chat-box {
+            height: 400px; overflow-y: auto; border: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 15px; margin-bottom: 20px; border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+        .message {
+            margin: 8px 0; padding: 10px 14px; border-radius: 12px;
+            max-width: 85%; font-size: 14px; line-height: 1.4;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn { from {opacity: 0; transform: translateY(5px);} to {opacity: 1; transform: translateY(0);} }
+        .bot { background: linear-gradient(135deg, #e3f2fd, #bbdefb); margin-right: 35px; float: left; clear: both; }
+        .user { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); margin-left: 35px; float: right; clear: both; text-align: right; }
+        .bot::before { content: '🤗'; margin-right: 5px; }
+        .user::after { content: '👤'; margin-left: 5px; }
+        .typing { background: linear-gradient(135deg, #e3f2fd, #bbdefb); animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% {opacity:0.6;} 50% {opacity:1;} 100% {opacity:0.6;} }
+        .input-container { display: flex; gap: 10px; }
+        #user-input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
+        button { padding: 10px 20px; background: linear-gradient(135deg, #4CAF50, #45a049); color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { transform: translateY(-1px); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        button:disabled { opacity: 0.7; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="header">
+            <h1>🤗 Velammal Wellness Bot</h1>
+            <p>Your 24/7 Health & Wellness Companion</p>
+        </div>
+        <div class="chat-box" id="chat-box">
+            <div class="message bot">👋 Hello! Welcome to Velammal Wellness Bot! 🌟<br><br>• Ask me about stress management 😌<br>• Physical health and exercise tips 💪<br>• Mental wellness and meditation 🧘‍♀️<br>• Study tips and academic wellness 📚<br>• Sleep and nutrition advice 😴🍎<br><br>How can I help you today? 😊</div>
+        </div>
+        <div class="input-container">
+            <input type="text" id="user-input" placeholder="Ask me about health, wellness, or personal growth...">
+            <button onclick="sendMessage()">Send 📤</button>
+        </div>
+    </div>
+
+    <script>
+        async function generateResponse(userMessage) {
+            try {
+                // Handle simple greetings and common responses
+                const message = userMessage.toLowerCase();
+                
+                if (message.includes('hi') || message.includes('hello') || message.includes('hey')) {
+                    return `Hello! 👋 Welcome to Velammal Wellness Bot! 
+
+• I'm here to help you with health and wellness advice 🌟
+• You can ask me about stress management 😌
+• Physical health and exercise tips 💪
+• Mental wellness and meditation 🧘‍♀️
+• Study tips and academic wellness 📚
+• Sleep and nutrition advice 😴🍎
+
+How can I help you today? 😊`;
+                }
+                
+                if (message.includes('thank') || message.includes('thanks')) {
+                    return `You're very welcome! 😊
+
+• I'm always here to help with wellness advice 💙
+• Feel free to ask more questions anytime 🤗
+• Take care of yourself and stay healthy! 🌟`;
+                }
+
+                const GEMINI_API_KEY = "AIzaSyDS80hhQC2iXEdRvSF25parDpBkxr0PlHU";
+                const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+                
+                const wellness_prompt = `You are a wellness assistant for students and teachers at Velammal School in Theni, India. Give helpful, relevant wellness advice.
+
+FORMATTING RULES:
+- Always use bullet points with • symbol
+- Add appropriate emojis to make responses engaging
+- Give 4-6 bullet points maximum
+- Be specific and actionable
+- Focus directly on the user's question
+- Use simple, clear language
+- Make advice practical for students/teachers
+
+User question: ${userMessage}
+
+Provide a helpful, relevant wellness response with emojis:`;
+
+                const response = await fetch(GEMINI_API_URL, {
+                    method: "POST",
+                    headers: { 
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: wellness_prompt
+                            }]
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
+                    let responseText = data.candidates[0].content.parts[0].text;
+                    
+                    // Clean up and format the response
+                    responseText = responseText
+                        .replace(/\*\*/g, '') // Remove bold markers
+                        .replace(/\*/g, '•') // Convert asterisks to bullet points
+                        .replace(/(\d+\.)/g, '•') // Convert numbered lists to bullet points
+                        .replace(/^\s*•\s*/gm, '• ') // Ensure proper bullet formatting
+                        .replace(/\n\s*\n/g, '\n') // Remove empty lines
+                        .trim();
+                    
+                    // If no bullet points, add them
+                    if (!responseText.includes('•')) {
+                        const sentences = responseText.split(/[.!?]+/).filter(s => s.trim());
+                        responseText = sentences.slice(0, 5).map(s => `• ${s.trim()}`).join('\n');
+                    }
+                    
+                    return responseText;
+                } else {
+                    throw new Error("No response from AI");
+                }
+            } catch (error) {
+                console.error(error);
+                return `Here are some wellness tips for you:
+
+• Take 5 deep breaths when feeling stressed 🧘‍♀️
+• Drink water regularly throughout the day 💧
+• Take a 5-minute break every hour while studying 📚
+• Get 7-8 hours of sleep each night 😴
+• Practice gratitude by writing 3 things you're thankful for �
+• Do some light stretching or exercise daily 🏃‍♀️
+• Connect with friends or family when feeling overwhelmed 👥`;
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById("user-input");
+            const message = input.value.trim();
+            if (!message) return;
+
+            const button = document.querySelector("button");
+            input.disabled = true;
+            button.disabled = true;
+
+            addUserMessage(message);
+            const chatBox = document.getElementById("chat-box");
+            const typing = document.createElement("div");
+            typing.className = "message bot typing";
+            typing.innerHTML = "Thinking... 💭";
+            chatBox.appendChild(typing);
+
+            const response = await generateResponse(message);
+            typing.remove();
+            addBotMessage(response);
+
+            input.disabled = false;
+            button.disabled = false;
+            input.value = "";
+            input.focus();
+        }
+
+        function addUserMessage(message) {
+            const chatBox = document.getElementById("chat-box");
+            chatBox.innerHTML += `<div class="message user">${message}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function addBotMessage(message) {
+            const chatBox = document.getElementById("chat-box");
+            
+            // Format the message for better display
+            const formattedMessage = message
+                .replace(/•/g, '<br>• ') // Add line breaks before bullet points
+                .replace(/^\s*<br>/, '') // Remove leading line break
+                .replace(/\n/g, '<br>'); // Convert newlines to HTML breaks
+            
+            chatBox.innerHTML += `<div class="message bot">${formattedMessage}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        document.getElementById("user-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") sendMessage();
+        });
+    </script>
+</body>
+</html>
